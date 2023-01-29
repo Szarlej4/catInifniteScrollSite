@@ -1,0 +1,74 @@
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	background: #0f0f0f;
+}
+
+.heading {
+	color: white;
+	font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+	grid-column: 1 / -1;
+	padding: 1rem;
+	font-size: 2.5rem;
+	text-align: center;
+}
+
+.container {
+	display: grid;
+	gap: 1rem;
+	grid-auto-rows: 1fr;
+	grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+	grid-template-rows: auto;
+	margin: 0 auto;
+	padding: 1rem;
+	width: clamp(17rem, 50%, 72rem);
+}
+
+.img.skeleton::after {
+	position: absolute;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	transform: translateX(-100%);
+	background: linear-gradient(90deg, rgba(255, 255, 255, 0) 0, rgba(255, 255, 255, 0.05) 20%, rgba(255, 255, 255, 0.1) 60%, rgba(255, 255, 255, 0));
+	content: "";
+	animation: skeleton-loading 2s infinite;
+}
+
+.img.skeleton {
+	position: relative;
+	overflow: hidden;
+	background: #82828233;
+}
+
+.img {
+	width: 100%;
+	object-fit: cover;
+	object-position: 50% 50%;
+	aspect-ratio: 1/1;
+}
+
+@media only screen and (max-width: 960px) {
+	.heading {
+		font-size: 2rem;
+	}
+}
+
+@media only screen and (max-width: 650px) {
+	.heading {
+		font-size: 1.75rem;
+	}
+}
+
+@keyframes skeleton-loading {
+	100% {
+		transform: translateX(100%);
+	}
+}
