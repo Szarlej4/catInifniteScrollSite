@@ -1,22 +1,42 @@
 const container = document.querySelector(".container");
+const overlay = document.querySelector(".overlay");
+const overlayImg = document.querySelector(".actualImg");
 // Last img element, used to detect whether new images should be loaded
 let lastElement = container.querySelector(".img:last-of-type");
 const config = { headers: { "x-api-key": "live_HduPUqcQvrEMIp0NH8hzwo9Ocm3VoA72ghvJypXkkmYSB3PokxzDUdqmQYsNNq8T" } };
 
 const init = async () => {
-	const imgs = document.querySelectorAll("img");
-	console.log(imgs);
+	const imgs = document.querySelectorAll(".img");
 	const imgSources = await getRandomImages(imgs.length);
-	console.log(imgSources);
 	imgs.forEach((img, id) => {
 		img.src = imgSources[id];
 		img.classList.remove("hidden");
 		unwrapImage(img);
 	});
-	window.addEventListener("scroll", addItemsOnScroll);
+	// window.addEventListener("scroll", addItemsOnScroll);
+	container.addEventListener("click", (e) => {
+		if (e.target.classList.contains("img")) {
+			const element = e.target;
+			setOverlayImageSource(element.src);
+			switchOverlayVisibility();
+		}
+	});
+	overlay.addEventListener("click", (e) => {
+		if (!e.target.classList.contains("actualImg")) {
+			switchOverlayVisibility();
+		}
+	});
 };
 
 init();
+
+const switchOverlayVisibility = () => {
+	overlay.classList.toggle("hidden");
+};
+
+const setOverlayImageSource = (src) => {
+	overlayImg.src = src;
+};
 
 const unwrapImage = (image) => {
 	image.parentElement.remove();
@@ -25,11 +45,10 @@ const unwrapImage = (image) => {
 
 async function getRandomImages(amount) {
 	try {
-		console.log("trying...");
 		const res = await axios.get(`https://api.thecatapi.com/v1/images/search?limit=${amount}`, config);
 		return res.data.map((element) => element.url);
 	} catch (e) {
-		console.log("Error ", e);
+		console.log("Error: ", e);
 	}
 }
 
@@ -66,10 +85,7 @@ const addImgs = async (amount) => {
 
 function addItemsOnScroll() {
 	if (isInViewport(lastElement)) {
-		console.log("yes");
 		createElements();
-	} else {
-		console.log("no");
 	}
 }
 

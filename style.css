@@ -51,13 +51,37 @@ body {
 
 .hidden {
 	opacity: 0;
+	pointer-events: none;
+}
+
+.actualImg {
+	user-select: none;
+	position: relative;
+	width: clamp(20rem, 70%, 60rem);
+	object-fit: contain;
+	aspect-ratio: 1/1;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+.overlay {
+	z-index: 2;
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background: rgba(0, 0, 0, 0.8);
 }
 
 .img {
 	width: 100%;
 	object-fit: cover;
+	user-select: none;
 	object-position: 50% 50%;
 	aspect-ratio: 1/1;
+	cursor: pointer;
 }
 
 @media only screen and (max-width: 960px) {
