@@ -7,17 +7,25 @@ const init = async () => {
 	const imgs = document.querySelectorAll("img");
 	console.log(imgs);
 	const imgSources = await getRandomImages(imgs.length);
+	console.log(imgSources);
 	imgs.forEach((img, id) => {
 		img.src = imgSources[id];
-		img.classList.remove("skeleton");
+		img.classList.remove("hidden");
+		unwrapImage(img);
 	});
 	window.addEventListener("scroll", addItemsOnScroll);
 };
 
 init();
 
+const unwrapImage = (image) => {
+	image.parentElement.remove();
+	container.append(image);
+};
+
 async function getRandomImages(amount) {
 	try {
+		console.log("trying...");
 		const res = await axios.get(`https://api.thecatapi.com/v1/images/search?limit=${amount}`, config);
 		return res.data.map((element) => element.url);
 	} catch (e) {
@@ -27,21 +35,32 @@ async function getRandomImages(amount) {
 
 const createImg = () => {
 	const img = document.createElement("img");
-	img.classList.add("img", "skeleton");
-	img.src = "";
+	img.classList.add("img", "hidden");
+	img.alt = "loading cat image";
 	return img;
 };
 
+createSkeleton = () => {
+	const skeleton = document.createElement("div");
+	skeleton.classList.add("skeleton");
+	return skeleton;
+};
+
 const addImgs = async (amount) => {
-	const skeletons = [];
+	const imgs = [];
 	for (let i = 0; i < amount; i++) {
-		skeletons.push(createImg());
+		const img = createImg();
+		imgs.push(img);
+		const skeleton = createSkeleton();
+		skeleton.append(img);
+		container.append(skeleton);
 	}
-	container.append(...skeletons);
 	const sources = await getRandomImages(amount);
-	skeletons.forEach((skeleton, id) => {
-		skeleton.src = sources[id];
-		skeleton.classList.remove("skeleton");
+	imgs.forEach((img, id) => {
+		img.src = sources[id];
+		img.alt = "Random cat image";
+		img.classList.remove("hidden");
+		unwrapImage(img);
 	});
 };
 

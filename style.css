@@ -23,14 +23,14 @@ body {
 	display: grid;
 	gap: 1rem;
 	grid-auto-rows: 1fr;
-	grid-template-columns: repeat(auto-fit, minmax(18rem, 1fr));
+	grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
 	grid-template-rows: auto;
 	margin: 0 auto;
 	padding: 1rem;
-	width: clamp(17rem, 50%, 72rem);
+	width: clamp(20rem, 80%, 72rem);
 }
 
-.img.skeleton::after {
+.skeleton::after {
 	position: absolute;
 	top: 0;
 	right: 0;
@@ -42,10 +42,15 @@ body {
 	animation: skeleton-loading 2s infinite;
 }
 
-.img.skeleton {
+.skeleton {
+	background: #82828233;
 	position: relative;
 	overflow: hidden;
-	background: #82828233;
+	aspect-ratio: 1/1;
+}
+
+.hidden {
+	opacity: 0;
 }
 
 .img {
@@ -61,7 +66,7 @@ body {
 	}
 }
 
-@media only screen and (max-width: 650px) {
+@media only screen and (max-width: 700px) {
 	.heading {
 		font-size: 1.75rem;
 	}
