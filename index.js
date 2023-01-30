@@ -1,28 +1,28 @@
 const container = document.querySelector(".container");
 const overlay = document.querySelector(".overlay");
-const overlayImg = document.querySelector(".actualImg");
+const overlayImg = document.querySelector(".overlayImg");
 // Last img element, used to detect whether new images should be loaded
 let lastElement = container.querySelector(".img:last-of-type");
 const config = { headers: { "x-api-key": "live_HduPUqcQvrEMIp0NH8hzwo9Ocm3VoA72ghvJypXkkmYSB3PokxzDUdqmQYsNNq8T" } };
 
 const init = async () => {
-	const imgs = document.querySelectorAll(".img");
+	const imgs = document.querySelectorAll(".mainImg");
 	const imgSources = await getRandomImages(imgs.length);
 	imgs.forEach((img, id) => {
 		img.src = imgSources[id];
 		img.classList.remove("hidden");
 		unwrapImage(img);
 	});
-	// window.addEventListener("scroll", addItemsOnScroll);
+	window.addEventListener("scroll", addItemsOnScroll);
 	container.addEventListener("click", (e) => {
-		if (e.target.classList.contains("img")) {
+		if (e.target.classList.contains("mainImg")) {
 			const element = e.target;
 			setOverlayImageSource(element.src);
 			switchOverlayVisibility();
 		}
 	});
 	overlay.addEventListener("click", (e) => {
-		if (!e.target.classList.contains("actualImg")) {
+		if (!e.target.classList.contains("overlayImg")) {
 			switchOverlayVisibility();
 		}
 	});
@@ -54,7 +54,8 @@ async function getRandomImages(amount) {
 
 const createImg = () => {
 	const img = document.createElement("img");
-	img.classList.add("img", "hidden");
+	img.classList.add("img", "mainImg", "hidden");
+	img.setAttribute("loading", "lazy");
 	img.alt = "loading cat image";
 	return img;
 };
@@ -114,7 +115,7 @@ const removeLastElement = () => {
 	Changes last element variable to last image element, used to load new content
 */
 const changeLastElement = () => {
-	lastElement = container.querySelector(".img:last-child");
+	lastElement = container.querySelector(".mainImg:last-child");
 };
 
 /* 
